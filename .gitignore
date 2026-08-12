@@ -1,0 +1,10 @@
+# Compilados
+*.exe
+*.o
+*.obj
+
+# VS Code
+.vscode/
+
+# Archivos de ejercicios individuales (no van a la guía pública)
+aritmetica_punteros/
