@@ -1,0 +1,10 @@
+---
+trigger: always_on
+---
+
+## Fuentes y Material Bibliográfico de Referencia
+"C:\Users\gian9\OneDrive\Desktop\AYED\BIBLIOGRAFIA\Algorithms - Sanjoy Dasgupta, Christos H. Papadimitriou, and Umesh V. Vazirani.pdf"
+"C:\Users\gian9\OneDrive\Desktop\AYED\BIBLIOGRAFIA\Data Structure and Algorithm Analysis in C++.pdf"
+"C:\Users\gian9\OneDrive\Desktop\AYED\BIBLIOGRAFIA\Introduction to Algorithms.pdf"
+"C:\Users\gian9\OneDrive\Desktop\AYED\BIBLIOGRAFIA\Stroustrup_-_The_C_Programming_Language_Special_Edition.pdf"
+"C:\Users\gian9\OneDrive\Desktop\AYED\BIBLIOGRAFIA\Algorithm Design - John Kleinberg - Éva Tardos.pdf"

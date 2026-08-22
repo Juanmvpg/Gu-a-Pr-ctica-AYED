@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AyED — Algoritmos y Estructuras de Datos en C++</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --surface: #111418;
+    --card: #161b22;
+    --border: #21262d;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --accent3: #f78166;
+    --accent4: #d2a8ff;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --tag-bg: #1f2937;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── GRID BACKGROUND ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(88,166,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(88,166,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── HERO ─── */
+  header {
+    position: relative;
+    z-index: 1;
+    padding: 60px 40px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--surface);
+  }
+
+  .badge.green { border-color: var(--accent2); color: var(--accent2); }
+  .badge.blue { border-color: var(--accent); color: var(--accent); }
+
+  /* ─── AI NOTICE ─── */
+  .ai-notice {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 0 40px;
+  }
+
+  .ai-box {
+    background: #0d1117;
+    border: 1px solid var(--accent);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .ai-box strong { color: var(--accent); }
+
+  /* ─── SEARCH ─── */
+  .search-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 0 40px;
+  }
+
+  #search {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #search:focus { border-color: var(--accent); }
+  #search::placeholder { color: var(--muted); }
+
+  /* ─── TOC ─── */
+  .toc {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto 32px;
+    padding: 0 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .toc-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .toc-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ─── MAIN LAYOUT ─── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+  }
+
+  /* ─── SECTION ─── */
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .section-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  /* ─── FILE GRID ─── */
+  .file-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+  }
+
+  .file-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+
+  .file-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  .file-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .file-icon {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .file-name {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  .file-snippet {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    border-left: 2px solid var(--border);
+    padding-left: 10px;
+  }
+
+  .file-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: var(--tag-bg);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .tag.pdf { color: #f78166; border-color: #f78166; background: rgba(247,129,102,0.08); }
+  .tag.cpp { color: var(--accent2); border-color: var(--accent2); background: rgba(63,185,80,0.08); }
+  .tag.ppt { color: var(--accent4); border-color: var(--accent4); background: rgba(210,168,255,0.08); }
+  .tag.txt { color: var(--accent); border-color: var(--accent); background: rgba(88,166,255,0.08); }
+  .tag.video { color: #ffa657; border-color: #ffa657; background: rgba(255,166,87,0.08); }
+
+  .file-size {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  .open-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 3px 8px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    transition: all 0.15s;
+    margin-left: auto;
+  }
+  .open-link:hover { border-color: var(--accent); background: rgba(88,166,255,0.1); }
+
+  /* ─── PROGRAM TABLE ─── */
+  .program-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .program-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--surface);
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .program-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  .program-table tr:hover td { background: var(--surface); }
+
+  .unit-num {
+    color: var(--accent);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* ─── NO RESULTS ─── */
+  #no-results {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  @media (max-width: 640px) {
+    header, .ai-notice, .search-wrap, .toc, main { padding-left: 20px; padding-right: 20px; }
+    h1 { font-size: 2rem; }
+    .file-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">// UNC · Facultad de Ciencias Exactas · 2026</div>
+  <h1>Algoritmos y<br><span>Estructuras de Datos</span></h1>
+  <p class="subtitle">$ material_index --lang cpp --format web</p>
+  <div class="meta-row">
+    <span class="badge blue">C++</span>
+    <span class="badge green">7 unidades</span>
+    <span class="badge">PDFs · Presentaciones · Código fuente</span>
+    <span class="badge">juan.gimenez.pintos@mi.unc.edu.ar</span>
+  </div>
+</header>
+
+<div class="ai-notice">
+  <div class="ai-box">
+    <strong>📄 Nota para IAs:</strong> Esta página contiene el índice completo del material de la materia AyED (Algoritmos y Estructuras de Datos) en C++ de la UNC. Cada archivo incluye su nombre, tipo, fragmento de contenido donde está disponible, y un enlace directo a Google Drive. El programa completo de la materia (10 unidades) está listado al final de la página.
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input type="text" id="search" placeholder="Buscar en el material... (ej: punteros, quicksort, árboles AVL)">
+</div>
+
+<div class="toc">
+  <a class="toc-btn" href="#intro">Introducción & OOP</a>
+  <a class="toc-btn" href="#recursion">Recursión</a>
+  <a class="toc-btn" href="#lineales">Estructuras Lineales</a>
+  <a class="toc-btn" href="#ordenamiento">Ordenamiento</a>
+  <a class="toc-btn" href="#arboles">Árboles</a>
+  <a class="toc-btn" href="#otras">Otras Estructuras</a>
+  <a class="toc-btn" href="#grafos">Grafos</a>
+  <a class="toc-btn" href="#videos">Videos</a>
+  <a class="toc-btn" href="#programa">Programa</a>
+</div>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN: INTRODUCCIÓN & OOP
+════════════════════════════════════════════════ -->
+<section class="section" id="intro">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(88,166,255,0.15)">🧩</div>
+    <h2 class="section-title">Introducción, Punteros & OOP</h2>
+    <span class="section-count">14 archivos</span>
+  </div>
+  <div class="file-grid" id="grid-intro">
+
+    <a class="file-card" href="https://drive.google.com/file/d/1oX9d1ozB4vxhau9bHHu7hOQsbwsTGU-2/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">OOP y punteros.pdf</span>
+      </div>
+      <div class="file-snippet">Punteros, memoria dinámica, Heap vs Stack, Memory Leaks, Structs, Clases, Herencia, Polimorfismo, Métodos virtuales, Herencia Múltiple, Sobrecarga de operadores, Funciones Amigas, Miembros estáticos.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">2.6 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1bC3ENQBJH730XLZfv5SSyIZerOrWDFqK/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📊</span>
+        <span class="file-name">FilminasCPP.pptx</span>
+      </div>
+      <div class="file-snippet">Ventajas/desventajas de C++. Tipos de datos primitivos. Palabras clave: const, static, mutable, volatile. Punteros constantes. Variables de clase. Métodos estáticos. Expansión inline.</div>
+      <div class="file-footer">
+        <span class="tag ppt">PPTX</span>
+        <span class="file-size">4.5 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/17cjGk4_J8EF5IJYh1FzwMVVDE6q_J10z/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">programacion-c_-4745.pdf</span>
+      </div>
+      <div class="file-snippet">Curso completo de C++ desde cero. Introducción a POO, objetos, clases, herencia, polimorfismo, encapsulamiento. Abstractos tipos de datos (TAD).</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">190 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1Mcb_ec8f116pQBfHFYORubb6yW_62mdA/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Stroustrup — The C++ Programming Language (Special Ed.)</span>
+      </div>
+      <div class="file-snippet">Libro oficial de Bjarne Stroustrup (creador de C++). Cubre tipos, punteros, funciones, clases, templates, excepciones, biblioteca estándar, contenedores, algoritmos, diseño con C++.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">3.4 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1E7fO1h_mZb47iZVwTcpxqEhDiG80rn6c/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">manual_cpp.pdf</span>
+      </div>
+      <div class="file-snippet">Manual completo de C++. Modificaciones menores y mayores respecto a C. OOP, clases, objetos, métodos. Herencia. Operadores new/delete. E/S. Expansión inline.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">664 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1Fl2eP-WIyBfHtQ-NuP5Z0qYk0hJq1AIz/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">glibc.pdf</span>
+      </div>
+      <div class="file-snippet">GNU C Library Reference Manual (edición 0.11). Manejo de memoria virtual, cadenas, E/S, sockets, señales, procesos, criptografía DES, configuración del sistema.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">4.8 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://docs.google.com/document/d/1zYSZYp7fY2kO3LHTI10xN0ehXkKR9mJBAWYhaQvuIkU/edit" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📝</span>
+        <span class="file-name">00_Punteros_Introduccion (Google Doc)</span>
+      </div>
+      <div class="file-snippet">Código de introducción a punteros. Función swap por valor, por puntero y por referencia. Aritmética de punteros con arreglos. Operadores & y *.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1ODetKCta65EM2kBYvQpCum-eoKJQ72Ud/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">00_Punteros_Introduccion.txt</span>
+      </div>
+      <div class="file-snippet">Código fuente: introducción a punteros. swap() por valor, puntero y referencia. Aritmética de punteros.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">1.5 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1TkQs92QgRf-v1eja-cJDm3vb2E_ele1v/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">01_Punteros_Swap.txt</span>
+      </div>
+      <div class="file-snippet">Código fuente: función swap usando punteros y referencias.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">966 B</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1z0LvY_qTVumluXRcBizFKbAPI-EhMeop/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">02_Estructuras_Fecha_Persona.c</span>
+      </div>
+      <div class="file-snippet">Código fuente: structs para modelar Fecha y Persona en C.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C</span>
+        <span class="file-size">1.5 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/12m2MLw876MDTtsoC8un-WPtmbpL0OTWf/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">03_Punteros_Puntero_Funcion.cpp</span>
+      </div>
+      <div class="file-snippet">Código fuente: punteros a funciones en C++.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">3.1 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1ZqmH727H3GzQ_pRYWQ1bC91Dv6m_L1K7/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">04_Orientacion_Objetos_Objeto_Tiempo.cpp</span>
+      </div>
+      <div class="file-snippet">Código fuente: clase Tiempo como ejemplo de OOP. Constructores, métodos, atributos privados.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">6.6 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1skSMsO6lzupevJ974NrErnuZbSEmzUo1/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">06_Orientacion_Objetos_Semana_Laboral.cpp</span>
+      </div>
+      <div class="file-snippet">Código fuente: clase SemanaLaboral como ejemplo de OOP con clases, herencia y métodos.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">6.6 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1lV-vaqTFCFGlLEJpBx6H4TwHcmeEuioH/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">Clase 02 2024 Herencia.cpp</span>
+      </div>
+      <div class="file-snippet">Código fuente: ejemplo de herencia en C++. Clases base y derivadas, constructores con herencia.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">5.4 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN: RECURSIÓN
+════════════════════════════════════════════════ -->
+<section class="section" id="recursion">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(210,168,255,0.15)">🔁</div>
+    <h2 class="section-title">Recursión</h2>
+    <span class="section-count">7 archivos</span>
+  </div>
+  <div class="file-grid">
+
+    <a class="file-card" href="https://drive.google.com/file/d/1ZSkvWntJKgDI0xA4a7fhPPghUwZDH68_/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">RECURSIVIDAD.pdf</span>
+      </div>
+      <div class="file-snippet">Recursividad simple, múltiple, directa e indirecta. Factorial, Fibonacci. Recursión de cola (tail recursion). De recursivo a iterativo. Stack frames y stack overflow.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">560 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/17SO_rvC7WfUugQl5-i9rmIliZVEPWdCV/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">tail_to_iterative (1).pdf</span>
+      </div>
+      <div class="file-snippet">Conversión de función recursiva a la cola en programa iterativo. Definición formal con dominios T1, T2, T3. Funciones d (corte), s (paso), h (resultado). Ejemplo con división entera.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">35 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1su29VN_8xh8xP_dm2eNv0JlheZAfE2As/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">tail_to_iterative.pdf</span>
+      </div>
+      <div class="file-snippet">Versión del documento sobre transformación recursivo-a-iterativo. Mismo contenido teórico con procedimiento paso a paso.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">35 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1s5lFChUavNggJR5bs5KBaiih-E35hTO3/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">07_Recursion_Introduccion.cpp</span>
+      </div>
+      <div class="file-snippet">Código fuente: primeros ejemplos de recursión en C++.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">590 B</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/15ZHrbrchyw4swFGjgaJdYnuWMiEdC2r0/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">08_Recursion_Ejercicios.cpp</span>
+      </div>
+      <div class="file-snippet">Ejercicios de recursión para resolver (versión sin solución).</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">711 B</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/18Zo6ba9TfAPZFEarMQr49VwP1vBVjivO/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">08_Recursion_Solucion_Ejercicios.cpp</span>
+      </div>
+      <div class="file-snippet">Soluciones a los ejercicios de recursión.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">1.8 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1iRV1Hkqvyem70UQbMGB03-jblVDxRGHU/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">🔗</span>
+        <span class="file-name">Software para generación y prueba de especificaciones de TADs.txt</span>
+      </div>
+      <div class="file-snippet">Enlace a herramienta para trabajar con especificaciones algebraicas de TADs.</div>
+      <div class="file-footer">
+        <span class="tag txt">TXT</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN: ESTRUCTURAS LINEALES
+════════════════════════════════════════════════ -->
+<section class="section" id="lineales">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(63,185,80,0.15)">📦</div>
+    <h2 class="section-title">Estructuras Lineales (Listas, Pilas, Colas)</h2>
+    <span class="section-count">9 archivos</span>
+  </div>
+  <div class="file-grid">
+
+    <a class="file-card" href="https://drive.google.com/file/d/1qi9yG9ek95c8SaSffoVF1Vg_o_GUUj5O/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">LISTAS.pdf</span>
+      </div>
+      <div class="file-snippet">Listas enlazadas: uso dinámico vs estático de memoria. Arreglos vs listas. Implementación de Nodo y Lista en C++. Templates/Genéricos. Especialización de templates.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">281 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1wPArHTPx5lYaMco93uc9yJQX6bSVA5or/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">COLAS_PILAS.pdf</span>
+      </div>
+      <div class="file-snippet">Pilas (LIFO) y Colas (FIFO). Implementación con arreglos y listas. Calculadora posfija (Notación Polaca Inversa). Balanceo de paréntesis con pilas.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">4.6 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1aXakH7O7g7CrioBGy52bhlZ0YACcWHux/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">Listas_Introduccion.cpp</span>
+      </div>
+      <div class="file-snippet">Código fuente: implementación básica de lista enlazada simple.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">3.6 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1Rf1ETCsvEtcgKYbZLGJ3MfM2-86uFHvG/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">09_Listas_Solucion_Introduccion.cpp</span>
+      </div>
+      <div class="file-snippet">Código fuente: solución a ejercicios de listas enlazadas.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">5 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1ycN0SRnlCZbuDu9UGv5iP3Ys55D2mIuA/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">10_Pilas_Lista.cpp</span>
+      </div>
+      <div class="file-snippet">Implementación de Pila usando lista enlazada (memoria dinámica).</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">7.1 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1yYXhAzNvX-wPuwnqEMxW61kuKuUUInTf/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">10_Pilas_Arreglo.cpp</span>
+      </div>
+      <div class="file-snippet">Implementación de Pila usando arreglo (memoria estática).</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">1.9 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1igb4IiIzfrA2FIO1Z4vWQ805AkgTHUqH/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">11_Colas_Lista.cpp</span>
+      </div>
+      <div class="file-snippet">Implementación de Cola usando lista enlazada.</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">7.8 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1uHpd5iIn_YzeBq4te0X-b8a_gyqoGXDO/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">💻</span>
+        <span class="file-name">11_Colas_Arreglo_Circular.cpp</span>
+      </div>
+      <div class="file-snippet">Implementación de Cola con arreglo circular (buffer circular).</div>
+      <div class="file-footer">
+        <span class="tag cpp">C++</span>
+        <span class="file-size">2.4 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN: ORDENAMIENTO
+════════════════════════════════════════════════ -->
+<section class="section" id="ordenamiento">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(247,129,102,0.15)">⚡</div>
+    <h2 class="section-title">Algoritmos de Ordenamiento</h2>
+    <span class="section-count">10 archivos</span>
+  </div>
+  <div class="file-grid">
+
+    <a class="file-card" href="https://drive.google.com/file/d/1Hl9qe2kBrOI2bSxJ86zwOX5WyeefIy3-/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">ORDENAMIENTO.pdf</span>
+      </div>
+      <div class="file-snippet">Ordenamiento Parte I. Burbuja (Bubble Sort), Selección (Selection Sort), Inserción (Insertion Sort). Especificación algebraica. Análisis de pasadas y comparaciones.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">5.8 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1z3KCI0NrUXJT8n3hS-JkoZeoxiE9Xmg2/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">QuickSort y MergeSort.pdf</span>
+      </div>
+      <div class="file-snippet">Algoritmos de ordenamiento O(n log n): QuickSort (divide y vencerás, pivote) y MergeSort (mezcla ordenada). Comparación de complejidades.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">369 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/18cM7A2ipUpkreohnRF7fzUWA5V70quLT/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">heapshort.pdf</span>
+      </div>
+      <div class="file-snippet">Heap Sort: ordenamiento usando estructura de montículo (heap). Complejidad O(n log n).</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">276 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1uWZXZeyB6eh0hifS3JpClIqzNJUNFFz-/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">burbuja.pdf</span>
+      </div>
+      <div class="file-snippet">Bubble Sort detallado: pseudocódigo, análisis paso a paso, complejidad O(n²).</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">133 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/111Re-R_O99fJYfRxPI82D6rHHOXRG3R2/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">selección.pdf</span>
+      </div>
+      <div class="file-snippet">Selection Sort detallado: partición ordenada/desordenada, selección del mínimo, complejidad O(n²).</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">140 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1iiGAto2aTcHWijjELy65gQxGRzwawn4o/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">insercción.pdf</span>
+      </div>
+      <div class="file-snippet">Insertion Sort: inserción en posición correcta por iteración. Analogía con ordenar cartas. Complejidad O(n²).</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">133 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/12SFFNIXn1LN70NMbT13BbK5M6hMohrE4/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">shell.pdf</span>
+      </div>
+      <div class="file-snippet">Shell Sort: mejora de insertion sort con gaps decrecientes. Complejidad promedio O(n log n).</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">133 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1Dh77j1GZAOtibf5UbnQJLFsrh6ADoka3/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📊</span>
+        <span class="file-name">AyED 03 - Sorting 01 v3.ppt</span>
+      </div>
+      <div class="file-snippet">Presentación de ordenamiento Parte 1: algoritmos cuadráticos.</div>
+      <div class="file-footer">
+        <span class="tag ppt">PPT</span>
+        <span class="file-size">1.1 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1Vs-eX34t7Nb8zmsoKx2kATkYGZgdBvRc/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📊</span>
+        <span class="file-name">AyED 03 - Sorting 02.ppt</span>
+      </div>
+      <div class="file-snippet">Presentación de ordenamiento Parte 2: algoritmos logarítmicos.</div>
+      <div class="file-footer">
+        <span class="tag ppt">PPT</span>
+        <span class="file-size">781 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1QAPqb4g3f9YMePTzMDw838xjO8vwDdvn/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📊</span>
+        <span class="file-name">AyED 03 - Sorting 02 (1).ppt</span>
+      </div>
+      <div class="file-snippet">Versión actualizada de la presentación de Sorting 02.</div>
+      <div class="file-footer">
+        <span class="tag ppt">PPT</span>
+        <span class="file-size">1.5 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN: ÁRBOLES
+════════════════════════════════════════════════ -->
+<section class="section" id="arboles">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(63,185,80,0.12)">🌳</div>
+    <h2 class="section-title">Árboles</h2>
+    <span class="section-count">5 archivos</span>
+  </div>
+  <div class="file-grid">
+
+    <a class="file-card" href="https://drive.google.com/file/d/1FW8Ycr9Wc_e__hDePt63rX76Ijue-dVg/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">arboles de busqueda.pdf</span>
+      </div>
+      <div class="file-snippet">Árboles binarios de búsqueda (BST): definición, inserción, búsqueda, recorridos (inorden, preorden, postorden).</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">432 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1PiIvQOLfxwhjeYFMJ86qU3RPzD5V7HsA/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Arboles de búsqueda con Borrado.pdf</span>
+      </div>
+      <div class="file-snippet">BST con operación de borrado: casos (hoja, un hijo, dos hijos). Sucesor inorden. Mantenimiento del árbol BST tras eliminación.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">580 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1RSZDwCIKL2l5jA-1TC_CRsIvIypdxu_C/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Árboles AVL.pdf</span>
+      </div>
+      <div class="file-snippet">Árboles AVL: árboles BST balanceados. Factor de balance, rotaciones simples y dobles (LL, RR, LR, RL). Rebalanceo automático.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">467 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/12W4oJRF9LFKeSYQl6KI0TKbZdHD3lmFA/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📊</span>
+        <span class="file-name">AyED 04 - Arboles 01.ppt</span>
+      </div>
+      <div class="file-snippet">Presentación: definición de árbol, árbol binario, m-ario, recorridos, implementación.</div>
+      <div class="file-footer">
+        <span class="tag ppt">PPT</span>
+        <span class="file-size">621 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1qILeTRz-z4gaC0beHQN-xLWhVTb-ZglK/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📊</span>
+        <span class="file-name">AyED 05 - Arboles 02_v2.ppt</span>
+      </div>
+      <div class="file-snippet">Presentación: balanceo de árboles, AVL, árboles B, montículos (heaps).</div>
+      <div class="file-footer">
+        <span class="tag ppt">PPT</span>
+        <span class="file-size">1.3 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN: OTRAS ESTRUCTURAS
+════════════════════════════════════════════════ -->
+<section class="section" id="otras">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(255,166,87,0.15)">🗃️</div>
+    <h2 class="section-title">Otras Estructuras de Datos (Hash, Bitset, Conjuntos)</h2>
+    <span class="section-count">5 archivos</span>
+  </div>
+  <div class="file-grid">
+
+    <a class="file-card" href="https://drive.google.com/file/d/11Jw2raUXo1g-TpFd_ZxCI85NFYwruu7R/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Hash.pdf</span>
+      </div>
+      <div class="file-snippet">Tablas Hash: funciones de dispersión, colisiones, resolución por encadenamiento y direccionamiento abierto. Complejidad O(1) amortizado.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">533 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1sjjK41XSm1Pn4CFafJKiRbJFr3RoJmSG/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">bitset1.pdf</span>
+      </div>
+      <div class="file-snippet">Mapas de bits (bitset): representación y operaciones. Uso eficiente de memoria.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">171 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1bvzuMaIAIotSIlytqY9oMNwEMn7oHbjT/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Bitset2.pdf</span>
+      </div>
+      <div class="file-snippet">Continuación del tema Bitset. Operaciones a nivel de bits, conjuntos representados como mapas de bits.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">260 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1w2NNZ1iXA9q_BOnUPofK4ndHjIYOp0Tf/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Bitser3.pdf</span>
+      </div>
+      <div class="file-snippet">Tercera parte del tema Bitset. Aplicaciones avanzadas de mapas de bits.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">713 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1oFUit5ITk4Hbdj9jdKdq4UP60ofdMrBT/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📊</span>
+        <span class="file-name">AyED 06 - Busqueda - Conjunto.ppt</span>
+      </div>
+      <div class="file-snippet">Presentación: búsqueda (lineal, binaria), conjuntos (sets), bolsas (bags), implementación con hash.</div>
+      <div class="file-footer">
+        <span class="tag ppt">PPT</span>
+        <span class="file-size">627 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN: GRAFOS
+════════════════════════════════════════════════ -->
+<section class="section" id="grafos">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(88,166,255,0.12)">🕸️</div>
+    <h2 class="section-title">Grafos</h2>
+    <span class="section-count">7 archivos</span>
+  </div>
+  <div class="file-grid">
+
+    <a class="file-card" href="https://drive.google.com/file/d/1aJUosgYL_OjO4sxKIPguLtOsE5_WCusO/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Búsqueda en Profundidad.pdf</span>
+      </div>
+      <div class="file-snippet">DFS (Depth-First Search): recorrido en profundidad. Implementación con pila. Grafos dirigidos y no dirigidos.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">189 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1ECBBM48IVBooZ0uVAbVWcFkywRNMapIx/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Búsqueda en Amplitud.pdf</span>
+      </div>
+      <div class="file-snippet">BFS (Breadth-First Search): recorrido en amplitud. Implementación con cola. Nivel de nodos.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">352 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1YwXl3-KK9ZIKekk4FnlmqBLp-wbDNN48/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Dijkstra.pdf</span>
+      </div>
+      <div class="file-snippet">Algoritmo de Dijkstra: camino mínimo desde un nodo origen. Grafos con pesos positivos. Complejidad con cola de prioridad.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">398 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1XnDEEWB5ZFv7mYQ5NpClhy_j89aEEtxI/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Wharshall - Floyd.pdf</span>
+      </div>
+      <div class="file-snippet">Algoritmos Warshall (clausura transitiva) y Floyd (todos los pares de caminos mínimos). Matrices de adyacencia. Complejidad O(n³).</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">392 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1vb2z2voF6tXotlHmGflTOetb4TXQUvUu/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📄</span>
+        <span class="file-name">Grafos - Prim.pdf</span>
+      </div>
+      <div class="file-snippet">Algoritmo de Prim: árbol generador mínimo (MST). Grafos no dirigidos con pesos.</div>
+      <div class="file-footer">
+        <span class="tag pdf">PDF</span>
+        <span class="file-size">463 KB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1X1_RQwNNgSULQ-9X_9TP7tyAKVc0S7VR/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📊</span>
+        <span class="file-name">AyED 07 - Grafos v1.ppt</span>
+      </div>
+      <div class="file-snippet">Presentación completa de grafos: definición, representaciones (lista de adyacencia, matriz), algoritmos de recorrido y caminos.</div>
+      <div class="file-footer">
+        <span class="tag ppt">PPT</span>
+        <span class="file-size">2.9 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1XuV-UFUWIU5wOgyY-zkSZKTluwLtw_oD/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">📊</span>
+        <span class="file-name">AyED 07 - Grafos v2.ppt</span>
+      </div>
+      <div class="file-snippet">Versión actualizada de la presentación de grafos.</div>
+      <div class="file-footer">
+        <span class="tag ppt">PPT</span>
+        <span class="file-size">1.2 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN: VIDEOS
+════════════════════════════════════════════════ -->
+<section class="section" id="videos">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(255,166,87,0.15)">🎬</div>
+    <h2 class="section-title">Videos — Simulación de Parcial</h2>
+    <span class="section-count">2 archivos</span>
+  </div>
+  <div class="file-grid">
+
+    <a class="file-card" href="https://drive.google.com/file/d/1mf-sxtqNrrISC5zgAtGfpME4UyjV2W12/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">🎬</span>
+        <span class="file-name">Simulación Parcial 1.mp4</span>
+      </div>
+      <div class="file-snippet">Video de simulación del Primer Parcial. Resolución en vivo de ejercicios del examen.</div>
+      <div class="file-footer">
+        <span class="tag video">MP4</span>
+        <span class="file-size">7.4 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+    <a class="file-card" href="https://drive.google.com/file/d/1kn3AxFjcsL9FFkdwp92pRK5LAErE3EGU/view" target="_blank">
+      <div class="file-top">
+        <span class="file-icon">🎬</span>
+        <span class="file-name">Modelo Parcial 1.mp4</span>
+      </div>
+      <div class="file-snippet">Video modelo del Primer Parcial. Formato y tipo de ejercicios del examen.</div>
+      <div class="file-footer">
+        <span class="tag video">MP4</span>
+        <span class="file-size">14.6 MB</span>
+        <span class="open-link">↗ abrir</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECCIÓN: PROGRAMA
+════════════════════════════════════════════════ -->
+<section class="section" id="programa">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(210,168,255,0.12)">📋</div>
+    <h2 class="section-title">Programa Completo de la Materia</h2>
+  </div>
+  <table class="program-table">
+    <thead>
+      <tr>
+        <th>Unidad</th>
+        <th>Tema</th>
+        <th>Subtemas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="unit-num">U1</td>
+        <td>Punteros y Memoria</td>
+        <td>Variables, direcciones, paso por puntero, memoria dinámica (new/delete), aritmética de punteros</td>
+      </tr>
+      <tr>
+        <td class="unit-num">U2</td>
+        <td>OOP: Objetos y Clases</td>
+        <td>Clases, objetos, métodos/atributos privados y públicos, herencia, constructores</td>
+      </tr>
+      <tr>
+        <td class="unit-num">U3</td>
+        <td>Estructuras Lineales</td>
+        <td>Arreglos, vectores, listas enlazadas, pilas (LIFO), colas (FIFO)</td>
+      </tr>
+      <tr>
+        <td class="unit-num">U4</td>
+        <td>Complejidad Algorítmica</td>
+        <td>Complejidad temporal y espacial, notación Big O, Omega, Theta</td>
+      </tr>
+      <tr>
+        <td class="unit-num">U5</td>
+        <td>Ordenamiento y Búsqueda</td>
+        <td>O(n²): Burbuja, Selección, Inserción, Shell · O(n log n): Quick, Merge, Heap · Búsqueda lineal y binaria</td>
+      </tr>
+      <tr>
+        <td class="unit-num">U6</td>
+        <td>Árboles</td>
+        <td>Árbol binario, m-ario, BST, AVL, balanceo, recorridos (inorden, preorden, postorden)</td>
+      </tr>
+      <tr>
+        <td class="unit-num">U7</td>
+        <td>Otras Estructuras</td>
+        <td>Tablas hash, funciones de dispersión, conjuntos (sets), bolsas (bags), mapas de bits</td>
+      </tr>
+      <tr>
+        <td class="unit-num">U8</td>
+        <td>Grafos</td>
+        <td>Definición, representaciones, DFS, BFS, Dijkstra, Floyd-Warshall, Prim</td>
+      </tr>
+      <tr>
+        <td class="unit-num">U9</td>
+        <td>Estrategias Algorítmicas</td>
+        <td>Divide y vencerás, algoritmos voraces (greedy), backtracking</td>
+      </tr>
+      <tr>
+        <td class="unit-num">U10</td>
+        <td>Historia y Visión de Conjunto</td>
+        <td>Revisión histórica de algoritmos y estructuras de datos</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div id="no-results">
+  <div style="font-size:32px;margin-bottom:12px">∅</div>
+  No se encontraron archivos que coincidan con tu búsqueda.
+</div>
+
+</main>
+
+<script>
+  const input = document.getElementById('search');
+  const noResults = document.getElementById('no-results');
+
+  input.addEventListener('input', () => {
+    const q = input.value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.file-card');
+    const sections = document.querySelectorAll('.section');
+    let totalVisible = 0;
+
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      const match = !q || text.includes(q);
+      card.style.display = match ? '' : 'none';
+      if (match) totalVisible++;
+    });
+
+    // hide empty sections
+    sections.forEach(sec => {
+      if (sec.id === 'programa') return;
+      const visible = sec.querySelectorAll('.file-card:not([style*="none"])').length;
+      sec.style.display = visible === 0 && q ? 'none' : '';
+    });
+
+    noResults.style.display = totalVisible === 0 && q ? 'block' : 'none';
+  });
+</script>
+
+</body>
+</html>
