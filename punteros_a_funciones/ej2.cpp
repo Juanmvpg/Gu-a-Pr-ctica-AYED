@@ -19,15 +19,15 @@
 // ============================================================
 
 bool esPar(int n) {
-    // Tu código acá
+    return (n%2==0);
 }
 
 bool esImpar(int n) {
-    // Tu código acá
+    return (n%2!=0);
 }
 
 bool esPositivo(int n) {
-    // Tu código acá
+    return (n>0);
 }
 
 // ============================================================
@@ -42,8 +42,25 @@ bool esPositivo(int n) {
 //   2da pasada: copiá esos elementos al nuevo array
 // ============================================================
 
-int* filtrar(const int* arr, int n, bool (*pred)(int), int* resultSize) {
-    // Tu código acá
+//Retorna memoria dinámica, no olvidar el delete[]
+int* filtrar(const int* arr, int n, bool (*pred)(int), int* resultSize) {//frst arg permite solo lectura, no se modifica
+
+    int cont=0;
+    for(int i=0; i<n;i++){
+        if(pred(*(arr+i))){
+            ++cont;
+        }
+    }
+    int* arrFilter = new int [cont];
+    *resultSize = cont;
+    int j=0;
+    for(int i=0; i<n; i++){
+        if(pred(*(arr+i))){
+            *(arrFilter + j) = *(arr+i);
+            j++;
+        }
+    }
+    return arrFilter;
 }
 
 // ============================================================

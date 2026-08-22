@@ -1,32 +1,36 @@
 // ============================================================
-// GUÍA PRÁCTICA — Punteros a Funciones y Callbacks
+//   GUÍA DE EJERCICIOS PRÁCTICOS
+//   Tema: Punteros a Funciones y Callbacks
 // ============================================================
-// Prerequisitos: punteros, aritmética de punteros, structs
-// Objetivo: aprender a pasar comportamiento como argumento
-//           mediante punteros a funciones (callbacks)
+// Prerequisitos: punteros, aritmética de punteros, structs.
+// Objetivo: aprender a pasar comportamiento como argumento mediante
+//           punteros a funciones (callbacks) y tablas de funciones.
 //
-// Conceptos clave:
-//   - Declaración:  bool (*nombre)(int, int)
-//   - Asignación:   nombre = miFuncion;  (sin paréntesis = dirección)
-//   - Invocación:   nombre(a, b);        (con paréntesis = ejecutar)
-//   - Compatibilidad: retorno Y todos los parámetros deben coincidir
+// Reglas y convenciones:
+//   - Evitar 'using namespace std;' (usar std:: explícito).
+//   - Uso de aritmética de punteros en algoritmos de recorrido.
+//   - Manejo responsable de memoria dinámica (delete / delete[]).
 // ============================================================
 
-#include <iostream>
 
 // ============================================================
-// EJERCICIO 1 — Burbuja con Comparador Inyectado (COMPLETO)
+// EJERCICIO 1 — Burbuja con Comparador Inyectado (Callback binario)
 // ------------------------------------------------------------
 // Concepto: bool (*compara)(int, int)
-//   Puntero a función de DOS argumentos → comparador.
-//   Permite inyectar el criterio de ordenamiento desde afuera.
+//   Un puntero a función de DOS argumentos permite desacoplar el
+//   algoritmo de ordenamiento del criterio de comparación.
 //
-// Lecciones:
-//   - Bucle externo: n-1 pasadas
-//   - Bucle interno: j < n-1-i (los últimos i elementos ya están ordenados)
-//   - intercambiar() recibe punteros (arr+j), no valores *(arr+j)
-//   - esMayor/esMenor se pasan sin paréntesis → decaen a dirección
+// Implementar:
+//   1. bool esMayor(int a, int b): retorna true si a > b.
+//   2. bool esMenor(int a, int b): retorna true si a < b.
+//   3. void intercambiar(int* a, int* b): swap por punteros.
+//   4. void ordenarBurbuja(int* arr, int n, bool (*compara)(int, int)):
+//      Bucle anidado de burbuja usando solo aritmética de punteros.
+//      - Bucle externo: n - 1 pasadas.
+//      - Bucle interno: j < n - 1 - i comparaciones.
 // ============================================================
+/*
+#include <iostream>
 
 bool esMayor(int a, int b) {
     if (a > b) return true;
@@ -44,8 +48,6 @@ void intercambiar(int* a, int* b) {
     *b = aux;
 }
 
-// Tercer argumento: espera la DIRECCIÓN de una función bool(int,int)
-// Retorno y tipos de parámetros deben coincidir exactamente.
 void ordenarBurbuja(int* arr, int n, bool (*compara)(int, int)) {
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - 1 - i; j++) {
@@ -56,137 +58,261 @@ void ordenarBurbuja(int* arr, int n, bool (*compara)(int, int)) {
     }
 }
 
-void imprimirArray_Ej1(const int* arr, int n) {
+void imprimirArray(const int* arr, int n) {
     for (int i = 0; i < n; ++i) {
         std::cout << *(arr + i) << " ";
     }
     std::cout << std::endl;
 }
 
-void ejercicio1() {
-    std::cout << "=== Ejercicio 1: Burbuja con comparador inyectado ===" << std::endl;
+int main() {
     int datos1[6] = {5, 2, 9, 1, 7, 3};
     int datos2[6] = {5, 2, 9, 1, 7, 3};
 
     std::cout << "Original:    ";
-    imprimirArray_Ej1(datos1, 6);
+    imprimirArray(datos1, 6);
 
-    ordenarBurbuja(datos1, 6, esMayor); // Pasa la DIRECCIÓN de esMayor
+    // Inyección de esMayor (ascendente):
+    ordenarBurbuja(datos1, 6, esMayor);
     std::cout << "Ascendente:  ";
-    imprimirArray_Ej1(datos1, 6);
+    imprimirArray(datos1, 6);
 
+    // Inyección de esMenor (descendente):
     ordenarBurbuja(datos2, 6, esMenor);
     std::cout << "Descendente: ";
-    imprimirArray_Ej1(datos2, 6);
-    std::cout << std::endl;
+    imprimirArray(datos2, 6);
+
+    // Resultado esperado:
+    // Original:    5 2 9 1 7 3 
+    // Ascendente:  1 2 3 5 7 9 
+    // Descendente: 9 7 5 3 2 1 
+
+    return 0;
 }
+*/
+
 
 // ============================================================
-// EJERCICIO 2 — Filtrar Array con Predicado Inyectado
+// EJERCICIO 2 — Filtrar Array con Predicado Inyectado (Callback unario)
 // ------------------------------------------------------------
 // Concepto: bool (*pred)(int)
-//   Puntero a función de UN argumento → predicado.
-//   Un predicado evalúa un elemento y dice si cumple una condición.
+//   Un predicado evalúa UN elemento de forma aislada y decide si cumple
+//   una condición (true) o no (false).
 //
-// Diferencia con Ejercicio 1:
-//   Ej1: bool (*compara)(int, int) → compara DOS elementos entre sí
-//   Ej2: bool (*pred)(int)         → evalúa UN elemento de forma aislada
-//
-// Desafíos:
-//   - Retornar un array dinámico (new int[...])
-//   - Comunicar el tamaño del resultado via int* resultSize
-//   - Dos pasadas: 1ra contar, 2da copiar
+// Implementar:
+//   1. bool esPar(int n), bool esImpar(int n), bool esPositivo(int n).
+//   2. int* filtrar(const int* arr, int n, bool (*pred)(int), int* resultSize):
+//      - 1ra pasada: contar cuántos elementos cumplen el predicado.
+//      - Asignar memoria dinámica: new int[count].
+//      - 2da pasada: copiar los elementos al nuevo array.
+//      - Retornar el array dinámico y escribir el tamaño en *resultSize.
+//   3. En el main():
+//      - Probar filtrado por pares y positivos.
+//      - Liberar la memoria con delete[].
 // ============================================================
+/*
+#include <iostream>
 
 bool esPar(int n) {
-    // Tu código acá
+    return (n % 2 == 0);
 }
 
 bool esImpar(int n) {
-    // Tu código acá
+    return (n % 2 != 0);
 }
 
 bool esPositivo(int n) {
-    // Tu código acá
+    return (n > 0);
 }
 
-// Retorna nuevo array dinámico con elementos que cumplen pred.
-// Escribe en *resultSize cuántos elementos tiene el resultado.
-// IMPORTANTE: quien llama es responsable de hacer delete[].
+// RETORNA: nuevo array dinámico. El llamador es responsable de delete[].
 int* filtrar(const int* arr, int n, bool (*pred)(int), int* resultSize) {
-    // Tu código acá
-    // Pista 1ra pasada: contá cuántos elementos cumplen pred(*(arr+i))
-    // Pista new:        int* resultado = new int[count];
-    // Pista 2da pasada: copiá con un índice escritura separado
-    // Pista resultSize: *resultSize = count;
+    int cont = 0;
+    for (int i = 0; i < n; i++) {
+        if (pred(*(arr + i))) {
+            ++cont;
+        }
+    }
+
+    int* arrFilter = new int[cont];
+    *resultSize = cont;
+
+    int j = 0;
+    for (int i = 0; i < n; i++) {
+        if (pred(*(arr + i))) {
+            *(arrFilter + j) = *(arr + i);
+            j++;
+        }
+    }
+    return arrFilter;
 }
 
-void imprimirArray_Ej2(const int* arr, int n) {
+void imprimirArray(const int* arr, int n) {
     for (int i = 0; i < n; ++i) {
         std::cout << *(arr + i) << " ";
     }
     std::cout << std::endl;
 }
 
-void ejercicio2() {
-    std::cout << "=== Ejercicio 2: Filtrar con predicado inyectado ===" << std::endl;
+int main() {
     int datos[8] = {3, -1, 4, 0, -7, 2, 9, -3};
     int n = 8;
 
     std::cout << "Original:  ";
-    imprimirArray_Ej2(datos, n);
+    imprimirArray(datos, n);
 
     int tamPares = 0;
     int* pares = filtrar(datos, n, esPar, &tamPares);
     std::cout << "Pares:     ";
-    imprimirArray_Ej2(pares, tamPares);
+    imprimirArray(pares, tamPares);
     delete[] pares;
+    pares = nullptr;
 
     int tamPos = 0;
     int* positivos = filtrar(datos, n, esPositivo, &tamPos);
     std::cout << "Positivos: ";
-    imprimirArray_Ej2(positivos, tamPos);
+    imprimirArray(positivos, tamPos);
     delete[] positivos;
+    positivos = nullptr;
+
+    // Resultado esperado:
+    // Original:  3 -1 4 0 -7 2 9 -3 
+    // Pares:     4 0 2 
+    // Positivos: 3 4 2 9 
+
+    return 0;
+}
+*/
+
+
+// ============================================================
+// EJERCICIO 3 — Transformación In-Place de Array (Map)
+// ------------------------------------------------------------
+// Concepto: int (*transforma)(int)
+//   Un puntero a función que recibe un valor y retorna su versión
+//   modificada. Permite transformar arrays sin duplicar lógica de bucle.
+//
+// Implementar:
+//   1. int duplicar(int n): retorna n * 2.
+//   2. int cuadrado(int n): retorna n * n.
+//   3. int negar(int n):    retorna -n.
+//   4. void mapear(int* arr, int n, int (*transforma)(int)):
+//      Aplica la transformación in-place a cada elemento: *(arr + i) = transforma(*(arr + i)).
+//   5. En el main():
+//      Probar las tres transformaciones secuencialmente e imprimir.
+// ============================================================
+/*
+#include <iostream>
+
+int duplicar(int n) {
+    // tu código acá
+}
+
+int cuadrado(int n) {
+    // tu código acá
+}
+
+int negar(int n) {
+    // tu código acá
+}
+
+void mapear(int* arr, int n, int (*transforma)(int)) {
+    // tu código acá
+}
+
+void imprimirArray(const int* arr, int n) {
+    for (int i = 0; i < n; ++i) {
+        std::cout << *(arr + i) << " ";
+    }
     std::cout << std::endl;
 }
 
-// ============================================================
-// EJERCICIO 3 — Transformar Array (Map)                [TODO]
-// ------------------------------------------------------------
-// Concepto: int (*transforma)(int)
-//   Puntero a función que transforma un elemento.
-//   void mapear(int* arr, int n, int (*transforma)(int))
-//   Aplica la transformación sobre cada elemento del array in-place.
-//
-// Funciones a implementar:
-//   - int duplicar(int n)   → retorna n * 2
-//   - int cuadrado(int n)   → retorna n * n
-//   - int negar(int n)      → retorna -n
-// ============================================================
-
-// Tu código acá (Ej 3)
-
-// ============================================================
-// EJERCICIO 4 — Tabla de Despacho (Dispatch Table)     [TODO]
-// ------------------------------------------------------------
-// Concepto: array de punteros a funciones
-//   void (*operaciones[4])(int*, int)
-//   Permite seleccionar un algoritmo por índice en vez de con if/switch.
-//
-// Funciones a incluir en la tabla:
-//   - imprimirArray, ordenarAsc, ordenarDesc, invertir
-// ============================================================
-
-// Tu código acá (Ej 4)
-
-// ============================================================
-// main — ejecuta los ejercicios completados
-// ============================================================
-
 int main() {
-    ejercicio1();
-    // ejercicio2();   // Descomentar al completar Ej 2
-    // ejercicio3();   // Descomentar al completar Ej 3
-    // ejercicio4();   // Descomentar al completar Ej 4
+    int datos[5] = {1, -2, 3, -4, 5};
+
+    std::cout << "Original:  ";
+    imprimirArray(datos, 5);
+
+    mapear(datos, 5, duplicar);
+    std::cout << "Duplicado: ";
+    imprimirArray(datos, 5);
+
+    mapear(datos, 5, cuadrado);
+    std::cout << "Cuadrado:  ";
+    imprimirArray(datos, 5);
+
+    // Resultado esperado:
+    // Original:  1 -2 3 -4 5 
+    // Duplicado: 2 -4 6 -8 10 
+    // Cuadrado:  4 16 36 64 100 
+
     return 0;
 }
+*/
+
+
+// ============================================================
+// EJERCICIO 4 — Tabla de Despacho (Dispatch Table / Menu con Punteros)
+// ------------------------------------------------------------
+// Concepto: array de punteros a funciones
+//   void (*operaciones[3])(int*, int)
+//   Permite seleccionar y ejecutar algoritmos por índice en O(1)
+//   sin cadenas largas de if / else o switch.
+//
+// Implementar:
+//   1. Funciones con firma uniforme 'void (int* arr, int n)':
+//      - void opInvertir(int* arr, int n)
+//      - void opDuplicarTodos(int* arr, int n)
+//      - void opOrdenarAsc(int* arr, int n)
+//   2. En el main():
+//      - Declarar el array de punteros: void (*tabla[3])(int*, int) = { ... };
+//      - Ejecutar operaciones accediendo por índice: tabla[opcion](datos, n);
+// ============================================================
+/*
+#include <iostream>
+
+void opInvertir(int* arr, int n) {
+    // tu código acá
+}
+
+void opDuplicarTodos(int* arr, int n) {
+    // tu código acá
+}
+
+void opOrdenarAsc(int* arr, int n) {
+    // tu código acá
+}
+
+void imprimirArray(const int* arr, int n) {
+    for (int i = 0; i < n; ++i) {
+        std::cout << *(arr + i) << " ";
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    int datos[5] = {5, 1, 4, 2, 8};
+
+    // Declaración de la tabla de despacho:
+    void (*operaciones[3])(int*, int) = {
+        opInvertir,
+        opDuplicarTodos,
+        opOrdenarAsc
+    };
+
+    std::cout << "Original: ";
+    imprimirArray(datos, 5);
+
+    // Ejecutar operación 0 (Invertir):
+    operaciones[0](datos, 5);
+    std::cout << "Invertido: ";
+    imprimirArray(datos, 5);
+
+    // Ejecutar operación 2 (Ordenar):
+    operaciones[2](datos, 5);
+    std::cout << "Ordenado:  ";
+    imprimirArray(datos, 5);
+
+    return 0;
+}
+*/
