@@ -8,3 +8,7 @@ trigger: always_on
 "C:\Users\gian9\OneDrive\Desktop\AYED\BIBLIOGRAFIA\Introduction to Algorithms.pdf"
 "C:\Users\gian9\OneDrive\Desktop\AYED\BIBLIOGRAFIA\Stroustrup_-_The_C_Programming_Language_Special_Edition.pdf"
 "C:\Users\gian9\OneDrive\Desktop\AYED\BIBLIOGRAFIA\Algorithm Design - John Kleinberg - Éva Tardos.pdf"
+"C:\Users\gian9\OneDrive\Desktop\Documentación c c++"
+
+Material de clases prácticas, enfoque preferente:
+"https://www.youtube.com/watch?v=Muh8BUq3X-Q&list=PLRWyl-AZ1ylo&pp=sAgC"
