@@ -35,21 +35,11 @@ private: // atributos
 
 public:
     void setTiempo(int hora, int minuto, int segundo){
-        this->hora = 00;
-        this->minuto = 00;
-        this->segundo = 00;
+            //patrón operador ternario: condición ? valorTrue: valorFalse
+        this->hora = (hora>=0 && hora<24) ? hora: 0;
+        this->minuto = (minuto >=0 && minuto <60) ? hora : 0;
+        this->segundo = (segundo>= 0 && segundo<60) ? hora: 0;
 
-        if(hora>=00 && hora<24){
-            this->hora = hora;
-        }
-
-        if(minuto>=00 && minuto<60){
-            this->minuto = minuto;
-        }
-
-        if(segundo>=00 && segundo<60){
-            this->segundo = segundo;
-        }
     }
 
     void imprimirMilitar() const{
@@ -61,8 +51,8 @@ public:
 
     void imprimirEstandar() const{        
         if(hora>=12){
-            std::cout<<std::setfill('0')
-                     <<std::setw(2)<<hora%12<<":";
+            
+            std::cout<<std::setw(2)<<hora%12<<":";
         }else{
             std::cout<<std::setfill('0')
                     <<std::setw(2)<<hora<<":";

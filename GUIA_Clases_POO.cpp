@@ -13,29 +13,13 @@
 
 
 // ============================================================
-// EJERCICIO 1 — Clase 'Tiempo': Encapsulamiento, Validaciones y 'this'
+// EJERCICIO 1 — Clase 'Tiempo': Encapsulamiento, Validaciones y 'this' (COMPLETO)
 // ------------------------------------------------------------
-// Enunciado:
-// Diseñá una clase 'Tiempo' que represente una hora del día.
-//
-// 1. Atributos privados (encapsulados):
-//    - int hora;     (0 a 23)
-//    - int minuto;   (0 a 59)
-//    - int segundo;  (0 a 59)
-//
-// 2. Métodos públicos:
-//    - void setTiempo(int hora, int minuto, int segundo);
-//      Asigna los valores verificando que sean válidos. Si alguno no es
-//      válido, asigna 0 por defecto.
-//      *Nota:* Usá el puntero 'this->hora = hora;' para resolver la
-//      ambigüedad de nombres entre parámetros y atributos.
-//    - void imprimirMilitar() const;
-//      Imprime en formato HH:MM:SS (ej: 14:05:09).
-//    - void imprimirEstandar() const;
-//      Imprime en formato 12 horas con AM/PM (ej: 2:05:09 PM).
-//    - void incrementarSegundo();
-//      Avanza un segundo el reloj, manejando el desborde de segundos,
-//      minutos y horas (ej: 23:59:59 -> 00:00:00).
+// Concepto:
+//   - Encapsulamiento con private: (hora, minuto, segundo).
+//   - Métodos públicos mutadores y de consulta (const).
+//   - Validación de estados válidos con operador ternario.
+//   - El puntero implícito 'this->'.
 // ============================================================
 /*
 #include <iostream>
@@ -48,7 +32,39 @@ private:
     int segundo;
 
 public:
-    // Tu código acá
+    void setTiempo(int hora, int minuto, int segundo) {
+        this->hora    = (hora >= 0 && hora < 24)       ? hora    : 0;
+        this->minuto  = (minuto >= 0 && minuto < 60)   ? minuto  : 0;
+        this->segundo = (segundo >= 0 && segundo < 60) ? segundo : 0;
+    }
+
+    void imprimirMilitar() const {
+        std::cout << std::setfill('0')
+                  << std::setw(2) << hora << ":"
+                  << std::setw(2) << minuto << ":"
+                  << std::setw(2) << segundo << std::endl;
+    }
+
+    void imprimirEstandar() const {
+        int hora12 = (hora == 0 || hora == 12) ? 12 : hora % 12;
+        std::cout << std::setfill('0')
+                  << std::setw(2) << hora12 << ":"
+                  << std::setw(2) << minuto << ":"
+                  << std::setw(2) << segundo
+                  << ((hora >= 12) ? " PM" : " AM") << std::endl;
+    }
+
+    void incrementarSegundo() {
+        if (++segundo == 60) {
+            segundo = 0;
+            if (++minuto == 60) {
+                minuto = 0;
+                if (++hora == 24) {
+                    hora = 0;
+                }
+            }
+        }
+    }
 };
 
 int main() {
@@ -80,8 +96,68 @@ int main() {
 
 
 // ============================================================
-// EJERCICIO 2 — Ciclo de Vida: Constructores y Lista de Inicialización
+// EJERCICIO 2 — Separación Interfaz/Implementación (::) y Constructores
 // ------------------------------------------------------------
-// Enunciado:
-// [Próximamente al completar Ejercicio 1]
+// Enunciado (Basado en el archivo 04_POO_Objeto_Tiempo de la cátedra):
+//
+// 1. Declarar la clase 'Tiempo2' con:
+//    - Atributos privados: int hora, minuto, segundo.
+//    - Constructor con parámetros por defecto: Tiempo2(int = 0, int = 0, int = 0);
+//    - Destructor: ~Tiempo2(); (muestra un mensaje al ejecutarse).
+//    - Métodos setters individuales:
+//        void setHora(int);
+//        void setMinuto(int);
+//        void setSegundo(int);
+//        void setHoraFull(int, int, int);
+//    - Métodos getters individuales (const):
+//        int getHora() const;
+//        int getMinuto() const;
+//        int getSegundo() const;
+//    - Métodos de visualización (const):
+//        void imprimeUniversal() const;
+//        void imprimeEstandar() const;
+//
+// 2. Definir TODAS las funciones miembro fuera de la clase usando
+//    el operador de resolución de ámbito (Tiempo2::nombreFuncion).
+//
+// 3. En el main():
+//    - Probar la creación de objetos con 0, 1, 2 y 3 argumentos.
+//    - Observar el momento exacto en que se ejecutan el constructor y el destructor.
 // ============================================================
+/*
+#include <iostream>
+#include <iomanip>
+
+class Tiempo2 {
+public:
+    Tiempo2(int = 0, int = 0, int = 0); // Constructor predeterminado
+    ~Tiempo2();                         // Destructor
+
+    // Setters
+    void setHoraFull(int, int, int);
+    void setHora(int);
+    void setMinuto(int);
+    void setSegundo(int);
+
+    // Getters
+    int getHora() const;
+    int getMinuto() const;
+    int getSegundo() const;
+
+    // Métodos de impresión
+    void imprimeUniversal() const;
+    void imprimeEstandar() const;
+
+private:
+    int hora;
+    int minuto;
+    int segundo;
+};
+
+// Implementar acá afuera usando Tiempo2::...
+
+int main() {
+    // Probar objetos t1, t2(2), t3(21, 34), t4(12, 25, 42)
+    return 0;
+}
+*/
