@@ -84,30 +84,18 @@ void Tiempo2::setHoraFull(int h, int m, int s) {
     setSegundo(s);
 }
 
-void Tiempo2::setHora(int h) {
-    this->hora = (h>=0 && h<24) ? h: 0;
-}
+void Tiempo2::setHora(int h) { this->hora = (h>=0 && h<24) ? h: 0; }
 
-void Tiempo2::setMinuto(int m) {
-   this -> minuto = (m>=0 && m<60) ? m: 0;
-}
+void Tiempo2::setMinuto(int m) { this -> minuto = (m>=0 && m<60) ? m: 0; }
 
-void Tiempo2::setSegundo(int s) {
-    this -> segundo = (s>=0 && s<60) ? s: 0;
-}
+void Tiempo2::setSegundo(int s) { this -> segundo = (s>=0 && s<60) ? s: 0; }
 
 // 4. Getters
-int Tiempo2::getHora() const {
-    return hora;
-}
+int Tiempo2::getHora() const { return hora; }
 
-int Tiempo2::getMinuto() const {
-    return minuto;
-}
+int Tiempo2::getMinuto() const { return minuto; }
 
-int Tiempo2::getSegundo() const {
-    return segundo;
-}
+int Tiempo2::getSegundo() const { return segundo; }
 
 // 5. Métodos de Impresión
 void Tiempo2::imprimeUniversal() const {

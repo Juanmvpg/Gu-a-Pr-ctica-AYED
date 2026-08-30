@@ -94,21 +94,24 @@ public:
     // ¿Cómo se inicializan 'datosPersonales', 'fechaIngreso' y 'sueldoBase'
     // en la lista de inicialización?
     Empleado(const std::string& nom, long doc, int dNac, int mNac, int aNac,
-             int dIng, int mIng, int aIng, double sueldo) 
-        : datosPersonales(nom, doc, dNac, mNac, aNac), fechaIngreso(dIng, mIng, aIng);
+             int dIng, int mIng, int aIng, double sueldo)
+             :datosPersonales(nom, doc, dNac, mNac, aNac), fechaIngreso(dIng, mIng, aIng)
 
     {
-        (sueldo >=0 ? sueldoBase=sueldo : 0);
+        (sueldo>=0) ? sueldoBase=sueldo: sueldoBase=0;
     }
 
     // Retorna los años trabajados desde el ingreso hasta anioActual
     int calcularAntiguedad(int anioActual) const {
-        // Tu código acá
+        if(anioActual>=fechaIngreso.getAnio()){ 
+            return (anioActual - fechaIngreso.getAnio());
+        }
+        return 0;
     }
 
     // Regla de Negocio: Sueldo neto = sueldoBase + (5% del sueldoBase * anios de antiguedad)
     double calcularSueldoNeto(int anioActual) const {
-        // Tu código acá
+        return (sueldoBase + (0.05*sueldoBase*calcularAntiguedad(anioActual)));
     }
 
     void mostrarFicha(int anioActual) const {

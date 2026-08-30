@@ -11,4 +11,6 @@ trigger: always_on
 "C:\Users\gian9\OneDrive\Desktop\Documentación c c++"
 
 Material de clases prácticas, enfoque preferente:
-"https://www.youtube.com/watch?v=Muh8BUq3X-Q&list=PLRWyl-AZ1ylo&pp=sAgC"
+"https://www.youtube.com/watch?v=Lc23yzEU6SE&list=PLRWyl-AZ1ylo&index=3" Clase 0
+"https://www.youtube.com/watch?v=Of8ClOTJYgQ&list=PLRWyl-AZ1ylo&index=2" Clase 1
+"https://www.youtube.com/watch?v=Muh8BUq3X-Q&list=PLRWyl-AZ1ylo&index=1" Clase 2

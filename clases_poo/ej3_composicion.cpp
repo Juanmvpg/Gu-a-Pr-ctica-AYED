@@ -27,7 +27,7 @@ private:
     int minuto;
 
 public:
-    Hora(int h = 0, int m = 0) {
+    Hora(int h = 0, int m = 0) { //igualados a 0 determinan la condición inicial
         setHora(h);
         setMinuto(m);
     }
@@ -106,9 +106,20 @@ public:
     }
 
     void mostrarResumen() const {
-        std::cout << std::left << std::setw(12) << nombreDia << ": ";
+        /*
+        std::cout << std::right;
+        std::cout << nombreDia <<std::setw(2)<< ": ";
         horario.imprimir();
         std::cout << std::endl;
+        */
+        //alineamos a la izquierda el nombre del día, y como setfill esta dentro no afecta al resto.
+        std::cout<<std::left<<std::setfill(' ')<< std::setw(12)<<nombreDia<<": ";
+        
+        //imprimimos el horario, que usará setfill('0') para los numeros. No se escribe todo en una sola linea porque cout espera un dato e imprimir es void.
+        std::cout<<std::right;
+        horario.imprimir();
+        std::cout<<std::endl;
+
     }
 };
 
