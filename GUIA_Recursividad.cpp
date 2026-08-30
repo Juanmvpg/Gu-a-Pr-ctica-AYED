@@ -57,35 +57,50 @@ int main() {
 
 
 // ============================================================
-// EJERCICIO 2 — Suma y Multiplicación Recursiva
+// EJERCICIO 2 — Aritmética y Reducción: Suma, Multiplicación y Tail Recursion (COMPLETO)
 // ------------------------------------------------------------
-// Enunciado (Basado en 08_Recursion_Solucion_Ejercicios de la cátedra):
-//
-// Implementar:
-//   1. int multiplicacionRusa(int a, int b):
-//      Multiplica 'a * b' utilizando solo SUMAS sucesivas recursivas.
-//      (Caso base: si b == 0 retorna 0; Caso recursivo: a + multi(a, b-1)).
-//   2. int sumaArray(const int* arr, int n):
-//      Suma todos los elementos de un array de forma recursiva.
-//   3. int sumaArrayTail(const int* arr, int n, int acumulador = 0):
-//      Versión Tail Recursion con acumulador (O(1) memoria en compiladores modernos).
+// Concepto:
+//   - Multiplicación mediante sumas recursivas.
+//   - Reducción de arrays mediante recursión tradicional (No-Tail) vs Tail Recursion con acumulador.
+//   - Conteo de elementos recursivo puro con promoción booleana.
 // ============================================================
 /*
 #include <iostream>
 
-// Tu código acá
+int multi(int a, int b) {
+    if (b == 0) return 0;
+    return a + multi(a, b - 1);
+}
+
+int sumaNoTail(const int* arr, int n) {
+    if (n == 0) return 0;
+    return *(arr + n - 1) + sumaNoTail(arr, n - 1);
+}
+
+int sumaTail(const int* arr, int n, int acumulador = 0) {
+    if (n == 0) return acumulador;
+    return sumaTail(arr + 1, n - 1, acumulador + *arr);
+}
+
+int potencia(int base, int exp) {
+    if (exp == 0) return 1;
+    return base * potencia(base, exp - 1);
+}
+
+int contarOcurrencias(const int* arr, int n, int buscado) {
+    if (n == 0) return 0;
+    return (*arr == buscado) + contarOcurrencias(arr + 1, n - 1, buscado);
+}
 
 int main() {
-    int v[6] = {17, 15, -8, 30, 5, -2};
+    int v[8] = {4, 2, 7, 2, -3, 2, 5, 1};
+    int n = 8;
 
-    std::cout << "Multiplicacion 5 * 7: " << multiplicacionRusa(5, 7) << std::endl;
-    std::cout << "Suma Recursiva Común: " << sumaArray(v, 6) << std::endl;
-    std::cout << "Suma Tail Recursion:  " << sumaArrayTail(v, 6) << std::endl;
-
-    // Resultado esperado:
-    // Multiplicacion 5 * 7: 35
-    // Suma Recursiva Común: 57
-    // Suma Tail Recursion:  57
+    std::cout << "Multiplicacion 5 * 7:   " << multi(5, 7) << std::endl;
+    std::cout << "Suma Recursiva Común:   " << sumaNoTail(v, n) << std::endl;
+    std::cout << "Suma Tail Recursion:    " << sumaTail(v, n) << std::endl;
+    std::cout << "Potencia 2^5:           " << potencia(2, 5) << std::endl;
+    std::cout << "Veces que aparece el 2: " << contarOcurrencias(v, n, 2) << std::endl;
 
     return 0;
 }
