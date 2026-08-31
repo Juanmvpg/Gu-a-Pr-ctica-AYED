@@ -30,17 +30,39 @@
 
 // 1. Búsqueda del Máximo
 int buscarMaximo(const int* arr, int n) {
-    // Tu código acá
+    if (n == 1) {
+        return *arr;
+    }
+    int maxResto = buscarMaximo(arr, n - 1);
+    return (*(arr + n - 1) > maxResto) ? *(arr + n - 1) : maxResto;
 }
 
 // 2. Búsqueda Binaria Recursiva (Divide y Conquistar)
 int busquedaBinaria(const int* arr, int inicio, int fin, int buscado) {
-    // Tu código acá
+    if (inicio > fin) {
+        return -1; // Caso base: no encontrado
+    }
+    
+    int medio = inicio + (fin - inicio) / 2;
+    
+    if (*(arr + medio) == buscado) {
+        return medio; // Caso base: encontrado
+    } else if (*(arr + medio) > buscado) {
+        return busquedaBinaria(arr, inicio, medio - 1, buscado); // Mitad izquierda
+    } else {
+        return busquedaBinaria(arr, medio + 1, fin, buscado); // Mitad derecha
+    }
 }
 
 // 3. Verificación de Palíndromo con punteros
 bool esPalindromo(const char* inicio, const char* fin) {
-    // Tu código acá
+    if (inicio >= fin) {
+        return true; // Caso base: cruzamos o llegamos al medio
+    }
+    if (*inicio != *fin) {
+        return false; // Caso base: discrepancia
+    }
+    return esPalindromo(inicio + 1, fin - 1); // Llamada recursiva avanzando punteros
 }
 
 int main() {
