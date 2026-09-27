@@ -18,18 +18,48 @@
 
 #include <iostream>
 
-using namespace std;
-
 // TODO: Definir la clase base Vehiculo aquí
+class Vehiculo {
+public:
+    virtual void acelerar()=0; //el =0 hace que sea una función virtual pura -> le dice al compilador que esta función no lleva codigo en esta misma clase.
+    virtual ~Vehiculo() {};
+
+};
+
+class Auto : public Vehiculo {
+public: //toda clase es por defecto privada, si no se aclara
+    void acelerar(){
+        std::cout<<"Brum brum"<<std::endl;
+    }
+};
+
+class Bicicleta : public Vehiculo {
+public:    
+    void acelerar(){
+        std::cout<<"Pedaleando"<<std::endl;
+    }
+};
 
 
-// TODO: Definir las clases derivadas Auto y Bicicleta aquí
 
 
 int main() {
-    cout << "=== EJERCICIO 3: LA FLOTA ===" << endl;
+    std::cout << "=== EJERCICIO 3: LA FLOTA ===" << std::endl;
     
     // TODO: Crear arreglo de punteros, instanciar dinámicamente, recorrer e iterar, liberar memoria.
+    Vehiculo* flota[2];
+    flota[0] = new Auto();
+    flota[1]= new Bicicleta();
+
+    for(int i=0; i<2; i++){
+        flota[i] -> acelerar(); //acelerar es un método, por ende se llama con la flecha
+        delete flota[i];
+    }
+
+
+    // 5. Asignar al primer elemento un `new Auto()` y al segundo un `new Bicicleta()`.
+// 6. Hacer un bucle for que recorra la flota y llame a `acelerar()` sobre cada puntero. 
+//    Al final, no te olvides de liberar cada puntero con `delete`.
     
     return 0;
 }
