@@ -173,3 +173,98 @@ int main() {
     return 0;
 }
 */
+
+
+// ============================================================
+// EJERCICIO 5 — Integración: Composición + Polimorfismo
+// ------------------------------------------------------------
+// Conceptos a evaluar:
+// - Clases que administran arreglos de punteros polimórficos.
+// - El objeto contenedor se hace cargo de la memoria de sus partes.
+//
+// Enunciado:
+// 1. Clase abstracta `Empleado`: 
+//    - Atributo privado `nombre` (string).
+//    - Constructor que recibe nombre. Getter para el nombre.
+//    - Método virtual puro: `double calcularSueldo() const = 0;`
+//    - Destructor virtual.
+// 2. Clase `Asalariado` (hereda de Empleado):
+//    - Atributo privado `sueldoFijo`.
+//    - Constructor que recibe nombre y sueldo.
+//    - Sobrescribe `calcularSueldo()` retornando el sueldoFijo.
+// 3. Clase `Comisionista` (hereda de Empleado):
+//    - Atributos `ventas` (int) y `comisionPorVenta` (double).
+//    - Constructor que recibe nombre, ventas y comision.
+//    - Sobrescribe `calcularSueldo()` retornando ventas * comision.
+// 4. Clase `Empresa`:
+//    - Atributo privado: `Empleado* plantilla[5];`
+//    - Atributo privado: `int cantidadEmpleados;`
+//    - Constructor por defecto (inicializa cantidad en 0).
+//    - Método `bool contratar(Empleado* emp)`: agrega al arreglo si hay lugar.
+//    - Método `double calcularGastoTotalSueldos() const`: suma los sueldos.
+//    - Destructor: OJO, debe hacer `delete` a cada empleado del arreglo.
+// ============================================================
+/*
+#include <iostream>
+#include <string>
+using namespace std;
+
+// TODO: Definir Empleado, Asalariado y Comisionista
+
+// TODO: Definir Empresa
+
+int main() {
+    cout << "=== EJERCICIO 5: EMPRESA ===" << endl;
+
+    // TODO: Instanciar Empresa, contratar 2 asalariados y 1 comisionista.
+    // Mostrar el gasto total en sueldos. 
+    // Nota: El main() ya no hace 'delete' de los empleados, de eso 
+    // se tiene que encargar el destructor de la Empresa.
+
+    return 0;
+}
+*/
+
+
+// ============================================================
+// EJERCICIO 6 — La "Regla de los Tres" (Constructor de Copia)
+// ------------------------------------------------------------
+// Conceptos a evaluar:
+// - Copia profunda vs Copia superficial (Deep copy vs Shallow copy).
+// - Cuándo es obligatorio crear un Constructor de Copia.
+//
+// Enunciado:
+// Imaginate que tenés un objeto con memoria dinámica (`new`). Si
+// igualás un objeto a otro (`obj2 = obj1`), ambos punteros apuntarán
+// al mismo lugar. Si se destruye uno, el otro queda apuntando a basura,
+// y se produce un "Doble Delete" (el programa crashea).
+// 
+// Tarea:
+// 1. Traé tu clase `BolsaNumeros` del Ejercicio 3 (con su new y delete).
+// 2. Agregale un "Constructor de Copia". La firma es:
+//    `BolsaNumeros(const BolsaNumeros& otra)`
+// 3. Adentro de ese constructor, debes:
+//    - Copiar la capacidad y la cantidad de la `otra` bolsa a esta.
+//    - Reservar un NUEVO arreglo dinámico (`datos = new int[capacidad]`).
+//    - Copiar los números del arreglo de `otra` al arreglo propio con un `for`.
+// 4. En el `main`, creá una bolsa, agregale 2 números, y luego creá
+//    una segunda bolsa usando copia: `BolsaNumeros copia(bolsaOriginal);`
+//    Agregá un número extra a la copia y mostrá ambas para comprobar 
+//    que no se mezclan (son independientes).
+// ============================================================
+/*
+#include <iostream>
+using namespace std;
+
+// TODO: Traer la clase BolsaNumeros del Ejercicio 3 y agregarle 
+// el Constructor de Copia.
+
+int main() {
+    cout << "=== EJERCICIO 6: COPIA PROFUNDA ===" << endl;
+
+    // TODO: Crear original, copiarla, modificar la copia, 
+    // mostrar ambas para comprobar independencia.
+
+    return 0;
+}
+*/
