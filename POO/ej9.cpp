@@ -1,0 +1,41 @@
+// ============================================================
+// EJERCICIO 6 — La "Regla de los Tres" (Constructor de Copia)
+// ------------------------------------------------------------
+// Conceptos a evaluar:
+// - Copia profunda vs Copia superficial (Deep copy vs Shallow copy).
+// - Cuándo es obligatorio crear un Constructor de Copia.
+//
+// Enunciado:
+// Imaginate que tenés un objeto con memoria dinámica (`new`). Si
+// igualás un objeto a otro (`obj2 = obj1`), ambos punteros apuntarán
+// al mismo lugar. Si se destruye uno, el otro queda apuntando a basura,
+// y se produce un "Doble Delete" (el programa crashea).
+// 
+// Tarea:
+// 1. Traé tu clase `BolsaNumeros` del Ejercicio 3 (con su new y delete).
+// 2. Agregale un "Constructor de Copia". La firma es:
+//    `BolsaNumeros(const BolsaNumeros& otra)`
+// 3. Adentro de ese constructor, debes:
+//    - Copiar la capacidad y la cantidad de la `otra` bolsa a esta.
+//    - Reservar un NUEVO arreglo dinámico (`datos = new int[capacidad]`).
+//    - Copiar los números del arreglo de `otra` al arreglo propio con un `for`.
+// 4. En el `main`, creá una bolsa, agregale 2 números, y luego creá
+//    una segunda bolsa usando copia: `BolsaNumeros copia(bolsaOriginal);`
+//    Agregá un número extra a la copia y mostrá ambas para comprobar 
+//    que no se mezclan (son independientes).
+// ============================================================
+
+#include <iostream>
+using namespace std;
+
+// TODO: Traer la clase BolsaNumeros del Ejercicio 3 y agregarle 
+// el Constructor de Copia.
+
+int main() {
+    cout << "=== EJERCICIO 6: COPIA PROFUNDA ===" << endl;
+
+    // TODO: Crear original, copiarla, modificar la copia, 
+    // mostrar ambas para comprobar independencia.
+
+    return 0;
+}
