@@ -268,3 +268,68 @@ int main() {
     return 0;
 }
 */
+
+// ============================================================
+// EJERCICIO 7 — Sistema de Notificaciones (Diseño Libre)
+// ------------------------------------------------------------
+// Conceptos a evaluar:
+// - Herencia, Clases Abstractas y Polimorfismo (sin guías estrictas).
+//
+// Enunciado:
+// Diseñá un sistema de notificaciones polimórfico. Deberás tener 
+// una clase base abstracta `Notificacion` que defina el contrato, y 
+// al menos dos clases hijas (ej: `NotificacionEmail`, `NotificacionSMS`).
+// En el `main`, deberás crear un arreglo de punteros polimórficos 
+// con distintas notificaciones mezcladas y, usando un solo bucle for, 
+// enviarlas todas mostrando sus detalles particulares en pantalla.
+// 
+// Nota: Vos decidís los atributos (a quién va dirigido, mensaje, etc.), 
+// los constructores, y cómo se llama el método virtual.
+// ============================================================
+/*
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    cout << "=== EJERCICIO 7: NOTIFICACIONES ===" << endl;
+
+    return 0;
+}
+*/
+
+
+// ============================================================
+// EJERCICIO 8 — El Hospital (El Jefe Final)
+// ------------------------------------------------------------
+// Conceptos a evaluar:
+// - Todo el cuatrimestre junto: Composición, Arreglos Dinámicos de 
+//   Punteros, Destructores y Regla de los Tres.
+//
+// Enunciado:
+// Construí una clase `Hospital` que administre objetos `Paciente`. 
+// A diferencia de la Empresa del Ej. 5, el arreglo interno de pacientes 
+// del Hospital NO debe ser estático (de tamaño fijo 5). El tamaño 
+// máximo del hospital debe definirse por parámetro en su constructor, 
+// obligándote a reservar un arreglo dinámico de punteros con `new`.
+// 
+// Tareas críticas:
+// 1. Deberás implementar un Destructor en el Hospital muy cuidadoso 
+//    para limpiar toda esa memoria sin dejar fugas.
+// 2. Debes implementar el Constructor de Copia del Hospital para 
+//    evitar un crash por "Doble Delete" si alguien en el main hace: 
+//    `Hospital hosp2 = hosp1;`
+//
+// Nota: El diseño de los atributos del Paciente queda a tu criterio.
+// ============================================================
+/*
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    cout << "=== EJERCICIO 8: HOSPITAL ===" << endl;
+
+    return 0;
+}
+*/

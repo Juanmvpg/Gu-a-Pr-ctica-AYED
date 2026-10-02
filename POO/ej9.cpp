@@ -26,10 +26,64 @@
 // ============================================================
 
 #include <iostream>
-using namespace std;
 
 // TODO: Traer la clase BolsaNumeros del Ejercicio 3 y agregarle 
 // el Constructor de Copia.
+class BolsaNumeros{
+int* datos;
+int capacidad;
+int cantidad;
+
+public:
+//constructor por parámetro
+    BolsaNumeros(int cap){
+        if(cap<=0){
+            capacidad=5;
+        }else{
+            capacidad=cap;
+        }
+        datos= new int[capacidad];
+        cantidad=0;
+    }
+//constructor por copia
+    BolsaNumeros (const BolsaNumeros& otra){
+        capacidad = otra.capacidad;
+        cantidad = otra.cantidad;
+        datos = new int[capacidad];
+        for(int i=0; i<cantidad;i++){
+            datos[i]=otra.datos[i];
+        }
+    }
+    ~BolsaNumeros(){
+        delete[] datos;
+        std::cout<<"Memoria liberada"<<std::endl;
+    }
+
+    bool insertar(int valor){
+        if(cantidad<capacidad){
+            datos[cantidad]=valor;
+            cantidad++;
+            return true;
+        }
+        return false;
+    }
+    void mostrar() const{
+        for(int i=0; i<cantidad;i++){
+            std::cout<<datos[i]<<" ";
+        }
+        std::cout<<std::endl;
+    }
+    double calcularPromedio() const{
+        if(cantidad==0){
+            std::cout<<"No se puede dividir por 0";
+            return 0;
+        }
+        
+        double suma=0;
+        for(int i=0; i<cantidad;i++) {suma += datos[i];}
+        return (suma/cantidad);
+    }
+};
 
 int main() {
     cout << "=== EJERCICIO 6: COPIA PROFUNDA ===" << endl;
