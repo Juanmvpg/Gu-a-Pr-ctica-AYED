@@ -86,10 +86,42 @@ public:
 };
 
 int main() {
-    cout << "=== EJERCICIO 6: COPIA PROFUNDA ===" << endl;
+    std::cout << "=== EJERCICIO 6: COPIA PROFUNDA ===" << std::endl;
 
     // TODO: Crear original, copiarla, modificar la copia, 
     // mostrar ambas para comprobar independencia.
+    int cap;
+    std::cout<<"cantidad numeros"<<std::endl;
+    std::cin>>cap;
+    
+    BolsaNumeros original(cap + 10);
 
+    for(int i=0; i<cap; i++){
+        int aux;
+        std::cout<<"ingrese el valor"<<std::endl;
+        std::cin>>aux;
+        original.insertar(aux);
+    }
+    
+    std::cout<<std::endl;
+
+    BolsaNumeros copia(original);
+    std::cout<<"Cuantos numeros le ingresas a la copia? 0 para no ingresar"<<std::endl;
+    int capAux;
+    std::cin>>capAux;
+    if(capAux != 0){
+        int auxCopia;
+
+        for(int i=0; i<=capAux;i++){
+        std::cout<<"ingrese el valor"<<std::endl;
+        std::cin>>auxCopia;
+                copia.insertar(auxCopia);
+        }
+    }
+
+    std::cout<<"Bolsa original"<<std::endl;
+    original.mostrar();
+    std::cout<<"Bolsa copia"<<std::endl;
+    copia.mostrar();
     return 0;
 }
