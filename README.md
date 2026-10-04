@@ -12,7 +12,8 @@ Construida de forma incremental, siguiendo estándares de arquitectura de softwa
 | [`GUIA_Arrays_Aritmetica_Punteros.cpp`](GUIA_Arrays_Aritmetica_Punteros.cpp) | **1. Arrays y Aritmética de Punteros** (Recorridos, Inversión, Máximos, Filtros, Merge dinámico) | ✅ Completo | 9 / 9 |
 | [`GUIA_Structs_Punteros.cpp`](GUIA_Structs_Punteros.cpp) | **2. Estructuras (`struct`) y Punteros** (Acceso `.` vs `->`, anidación, arrays dinámicos en Heap) | ✅ Completo | 3 / 3 |
 | [`GUIA_Punteros_a_Funciones.cpp`](GUIA_Punteros_a_Funciones.cpp) | **3. Punteros a Funciones y Callbacks** (Comparadores binarios, predicados unarios, Map, Dispatch Tables) | ✅ Completo | 5 / 5 |
-| [`GUIA_Clases_POO.cpp`](GUIA_Clases_POO.cpp) | **4. Programación Orientada a Objetos (POO)** (Encapsulamiento, `this`, constructores/destructores, composición) | 🔄 En Progreso | 3 / 5 |
+| [`GUIA_Clases_POO.cpp`](GUIA_Clases_POO.cpp) | **4. Programación Orientada a Objetos (POO)** (Encapsulamiento, `this`, constructores/destructores, composición) | ✅ Completo | 8 / 8 |
+| [`GUIA_UNIDAD3_Estructuras_Lineales.cpp`](GUIA_UNIDAD3_Estructuras_Lineales.cpp) | **5. Estructuras Lineales** (Vectores, Listas Simplemente Enlazadas, Nodos) | 🔄 En Progreso | 0 / 1 |
 
 ---
 
