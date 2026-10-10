@@ -68,3 +68,45 @@
 //      el rastro del resto de la cadena.
 // ============================================================
 */
+
+/*
+// ============================================================
+// EJERCICIO 4 — CIRUGÍA DE NODOS (Borrado en las puntas)
+// ============================================================
+// Objetivo: Aprender a desconectar nodos específicos sin romper el tren.
+//
+// Consigna:
+// 1. Copiá tu clase Lista.
+// 2. Implementá `void eliminarPrimero()`: Desconecta la cabeza actual y 
+//    hace que la nueva cabeza sea el segundo vagón. ¡No olvides hacer delete!
+// 3. Implementá `void eliminarUltimo()`: Usá un bucle para viajar hasta 
+//    el *anteúltimo* nodo. Desconectá al último y hacé el delete.
+//    (Ojo con el caso en que la lista tenga 1 solo elemento).
+// ============================================================
+*/
+
+/*
+// ============================================================
+// EJERCICIO 5 — UTILIDADES Y ESCALABILIDAD
+// ============================================================
+// Objetivo: Implementar métodos clásicos de manejo de colecciones.
+//
+// Consigna:
+// 1. Implementá `int size()`: Recorre la lista y retorna la cantidad de nodos.
+// 2. Implementá `void concat(Lista* l1)`: Recibe un puntero a OTRA lista, viaja 
+//    hasta el final de la lista actual, y engancha la cabeza de l1.
+// 3. Implementá `void vaciar()`: Reutiliza el código de limpieza.
+// ============================================================
+*/
+
+/*
+// ============================================================
+// EJERCICIO 6 — RECURSIVIDAD EN LISTAS
+// ============================================================
+// Objetivo: Abandonar los bucles `while` y usar el poder de la recursión.
+//
+// Consigna:
+// 1. Implementá un método que imprima la lista usando recursividad.
+// 2. Implementá `int sumaRecursiva()` que sume los datos de todos los nodos.
+// ============================================================
+*/
