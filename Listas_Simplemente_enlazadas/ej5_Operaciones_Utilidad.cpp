@@ -81,6 +81,7 @@ public:
             }
             aux->nodoSig= l1->cabeza;
         }
+        l1->cabeza=nullptr;
     }
 
 };
